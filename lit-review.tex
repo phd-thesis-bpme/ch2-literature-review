@@ -1,4 +1,4 @@
-\chapter{In defense of detectability: Importance of detection probability in bird surveys and recent advances in estimation}
+\chapter{What affects detectability in landbirds, and how do we model it?}
 
 \section{Introduction}
 
@@ -16,15 +16,16 @@ Then, we can define perceptibility $q(\cdot)$ as a function that generates the c
 Hence, we have that detectability $f(\cdot) = p(\cdot) \times q(\cdot)$.
 Often, the terms ``perceptibility" and ``detectability" are used interchangeably (see for example CITATION CITATION CITATION).
 However, for the purposes of this review, I will specifically use perceptibility when referring to the conditional probability that a cueing bird is recorded, whereas I will use ``detectability" when referring to the product of availability and perceptibility.
-In additional, for the purposes of the following arguments in this paper, I will consider the observer to be a human conducting a point count or transect. However, at the end of this review, I will dive into opportunities for passive acoustic monitoring to function as an observer.
+In addition, for the purposes of the following arguments in this chapter, I will consider the observer to be a human conducting a point count or transect. However, in Chapter 6, I will dive into opportunities for passive acoustic monitoring to function as an observer.
 
 \par Detectability in landbirds is generally non-constant. 
 Factors such as time of day, time of year, habitat type, and presence of roads, among several other factors, have been shown to affect both the availability and the perceptibility of birds \citep{wilson_reliability_1985, solymos_calibrating_2013, johnston_species_2014, cooke_road_2020}. 
 Additionally, the length of time for which an observer surveys for a bird, and the maximum survey distance for which the observer is surveying, can account for some variation in how many birds are detected and recorded for any given survey \citep{alldredge_factors_2007, solymos_calibrating_2013, buckland_distance_2015}.  
 Our goal in detectability research is to appropriately model the components $p(\cdot)$ and $q(\cdot)$ so as to derive an accurate and precise estimate of detectability that captures the variation.
 Table 1 of \citet{johnson_defense_2008} nicely captures the various factors that affect both availability and perceptibility in birds.
-While all of these factors still hold true, we choose to expand on the table, both by elaborating on many of the factors, and by attempting to further separate the factors into ``survey-specific" and ``species-specific" factors.
-We feel this distinction is important when considering modelling variation in detectability both within and among species, in a variety of survey contexts.
+In the following two sections of this chapter (i.e., ``What affects availability?" and ``What affects perceptibility?"), I will expand on the table by providing context for each of the factors, as well as research that shows general trends of magnitude and direction of these factors as it relates to detectability.
+These factors will then build up to the section where I describe \textit{how} to model detectability, with a particular focus on the QPAD methodology that has been developed from the Boreal Avian Modelling project.
+
 
 \section{What affects availability?}
 
@@ -47,8 +48,8 @@ In western North America, the ``green-up" time generally happens earlier, and so
 However, there is yet to be a study that clearly shows this, so this may be an avenue for future research.
 
 \par It should be noted that while many songbirds fit into a classical ``peak availability in the morning and during early breeding season", it is not necessarily the case that all \textit{landbirds} fit into this description.
-One clear example would be nightjars, where their typical displays (and therefore peak availability) are in the crepuscular hours.
-This is also true of some shorebirds such as American Woodcock, where they are much less available during the day than in the evening hours.
+One clear example would be nightjars, where their typical displays (and therefore peak availability) are in the crepuscular hours \citep{knight_still_2022}.
+This is also true of some shorebirds such as American Woodcock, where they are much less available during the day than in the evening hours \citep{binley_better_2023}.
 As such, when modelling availability in landbirds in general (see discussion later), it may not necessarily be appropriate to throw a ``one size fits all" when considering temporal factors.
 
 \subsection{Evolutionary Processes}
@@ -125,28 +126,56 @@ Indeed, there is evidence to suggest that bird song has evolved partially depend
 In forested environments, pure-tone-based songs, such as those from White-throated Sparrow (\textit{Zonotrichia albicollis}), can carry better through the excess attenuation of the forest (CITE Morton and Brumm citations), whereas in an open environment, birds are more likely to have "rattle" songs (CITE Wiley 1991).
 As such, habitat preference can be a factor that affects perceptibility, in that it could be used as a proxy for these song types.
 
+\subsection{Observer Effects} 
+Observer effects that seem to go unmodelled but there there 
+Observer senescence 
+Skill level of IDing birds 
+Ability to accurately estimate distance (not good according to (Alldredge et al., 2007) 
+Soundscape is getting louder 
+Donut effect, esp for grassland birds 
+
 \section{Modelling of Detectability}
 
 \par In general, at any given sampling event, for species $s$, there exists the true species abundance $Y_s$, which represents all the individuals of species $s$ at that site at the time of the sampling event. During any sampling event, the recorded count for species $s$ (i.e., $\hat{Y_s}$), is a subset of the true abundance $Y_s$, such that $\hat{Y_s} \leq Y_s$, assuming individuals are correctly identified \citep{bennett_how_2024, johnson_defense_2008}. The difference between the recorded count and the true count depends on the detectability of the birds. The factors that affect detectability of species $s$ can be accounted for in the latent detectability function $f(\cdot)$, such that
 \begin{equation}\label{detect-function}
 	\mathbb{E}\left[\hat{Y_s}\right] = Y_s \times f(\cdot).
 \end{equation}
+In other words, on average, the expected number of observed individuals of species $s$ is going to be a function of the true number of individuals of species $s$ scaled by the detectability of species $s$.
 
-\par Let $p_s(t)$ be the availability of species $s$ for a given survey duration $t$, and let $q_s(r)$ be the perceptibility of species $s$ for a given survey radius $r$ from an observer \citep{solymos_calibrating_2013}. The detectability function can now be written as $f(\cdot) = p_s(t) \times q_s(r)$, and Equation \ref{detect-function} can now be written as:
+\par A point count is generally run for a limited maximum duration of time (e.g., 3 minutes, or 5 minutes, or 10 minutes, etc.) and within a limited-radius point-count circle (e.g., 200 m, 400 m, etc.).
+Let $p_s(t)$ be the availability of species $s$ for a given survey duration $t$, and let $q_s(r)$ be the perceptibility of species $s$ for a given survey radius $r$ from an observer \citep{solymos_calibrating_2013}. 
+Because detectability is a product of two components (availability and perceptibility), the detectability function can now be written as $f(\cdot) = p_s(t) \times q_s(r)$, and Equation \ref{detect-function} can now be written as:
 
 \begin{equation*}
 	\mathbb{E}\left[\hat{Y_s}\right] = Y_s \times p_s(t) \times q_s(r).
 \end{equation*}
 
-\par $p_s$ is calculated from surveys that employ a removal sampling approach \citep{alldredge_time--detection_2007, farnsworth_removal_2002, solymos_evaluating_2018}, in which total survey time is partitioned into “time bins” $t_J$, not necessarily of equal size. For example, a 6-minute survey may be partitioned into $J = 6$ 1-minute time bins. Or, it could be partitioned into a 1-minute time bin, followed by a 3-minute time bin, followed by a 2-minute time bin, for a total of $J = 3$ time bands. If a bird gives a cue and is recorded in time bin $j$, then it is “removed” from the available birds to be recorded in all subsequent time bin. Cue rates follow a Poisson process with Poisson parameter $\phi$, which is estimated via maximum likelihood estimation or Bayesian estimation given survey type and any number of covariates, and the time to first cue event (i.e., detection) follows an exponential distribution $f(t) = \phi e^{-t\phi}$. Thus, the cumulative distribution function for time to first detection on the interval $\left[0, t_J\right]$ is given by (Alldredge et al., 2007)
+\par Availability $p_s$ is calculated from surveys that employ a removal sampling approach \citep{alldredge_time--detection_2007, farnsworth_removal_2002, solymos_evaluating_2018}, in which total survey time is partitioned into “time bins” $t_J$, not necessarily of equal size. 
+For example, a 6-minute survey may be partitioned into $J = 6$ 1-minute time bins, such that the $j = 1$ time bin corresponds to 0 - 1 minutes of the survey, the $j = 2$ time bin corresponds to 1 - 2 minutes of the survey, and so on.
+Or, it could be partitioned into a 1-minute time bin, followed by a 3-minute time bin, followed by a 2-minute time bin, for a total of $J = 3$ time bands, not necessarily of equal size. 
+If a bird gives a cue and is recorded in time bin $j$, then it is ``removed” from the available birds to be recorded in all subsequent time bin. 
+Availability is a function of ``cue rate", which we label $\phi$.
+Cue rate $\phi$ is a Poisson process that describes the intensity of bird calls per minute, and is estimated via maximum likelihood estimation or Bayesian estimation given survey type and any number of covariates. 
+Then, the time to first cue event (i.e., detection) follows an exponential distribution $f(t) = \phi e^{-t\phi}$. 
+Thus, the cumulative distribution function for time to first detection on the interval $\left[0, t_J\right]$, and hence availability $p(t_J)$, is given by (Alldredge et al., 2007)
 \begin{align*}
 	p(t_J) &= \int_{0}^{t_J} \phi e^{-t\phi} dt \\
 	&= 1 - e^{-t\phi}.
 \end{align*}
 
-\par $q_s$ is calculated from surveys employing a distance sampling protocol \citep{buckland_introduction_2001, buckland_distance_2015}. Distance sampling partitions the point count survey area into discrete distance bins $r_K$. For example, when considering a 200m point count radius, the area may be partitioned into $K = 2$ 100m bins, or $K = 4$ 50m bins. The outermost bin can have finite or infinite truncation distance. Birds are then recorded by the observer as to how far away from the observer the bird was perceived. \citet{solymos_calibrating_2013} assume a half-normal detection function with probability of detecting an available bird at a distance $r$ from the observer is $g(r) = e^{-\dfrac{r^2}{\tau^2}}$, where $\tau^2$ is the variance of the unfolded normal distribution that describes the rate of distance decay and is estimated via multinomial conditional maximum likelihood estimation given survey type and any number of covariates. Following \citet{buckland_introduction_2001, solymos_calibrating_2013} the probability $q_s$ that an individual bird located within radius $r_K$ gives a cue that is perceived by an observer is given by
+\par Perceptibility $q_s$ is calculated from surveys employing a distance sampling protocol \citep{buckland_introduction_2001, buckland_distance_2015}. 
+Distance sampling partitions the circular point count survey area into discrete distance bins $r_K$. 
+For example, when considering a 200m point count radius, the area may be partitioned into $K = 2$ 100m bins, such that the $k = 1$ bin corresponds to the area from 0 - 100 m, and the $k = 2$ bin corresponds to the area from 100 - 200 m. 
+Or, the area could be divided into $K = 4$ 50m bins. 
+As with removal sampling, the bins need not be of equal size.
+The outermost bin can have finite or infinite truncation distance.
+Birds are then recorded by the observer as to how far away from the observer the bird was perceived, and placed into these bins.
+It is then assumed that the probability of perceiving a bird follows some detection function, which describes the drop in perceptibility with increasing distance.
+While there are several options to choose from for detection functions, such as a Uniform function, hazard function, or negative exponential function \citep{buckland_distance_2015}, the most commonly-used detection function is the half-normal detection function, where the probability of detecting an available bird at a distance $r$ from the observer is $g(r) = e^{-\dfrac{r^2}{\tau^2}}$. Here, $\tau^2$ is the variance of the unfolded normal distribution that describes the rate of distance decay and can be estimated via maximum likelihood estimation or Bayesian estimation given survey type and any number of covariates. 
+This value is also called the ``effective detection radius" (EDR; \citet{buckland_introduction_2001}.
+From this, the probability $q_s$ that an individual bird located within radius $r_K$ gives a cue that is perceived by an observer, and hence its perceptibility $q(r_K)$, is given by
 \begin{equation*}
-	q(r_K) = \dfrac{\pi \tau^2 \left(1 - e^{-\dfrac{r^2}{\tau^2}}\right)}{\pi r^2_K}
+	q(r_K) = \dfrac{\pi \tau^2 \left(1 - e^{-\dfrac{r^2}{\tau^2}}\right)}{\pi r^2_K}.
 \end{equation*}
 
 \subsection{The QPAD Approach to Detectability Estimation}
@@ -205,13 +234,7 @@ This can also be done using the \texttt{detect} R package \citep{solymos_detect_
 
 \par The QPAD method allows for estimates of true density to be derived from any survey, by allowing the detectability function to act as a statistical offset to account for differences among survey types. An offset term is used in linear models to adjust the expected value with a known quantity. In our case the detectability function quantity is not known but estimated through QPAD. But as a result, the offsets allow all survey-observed counts to be translated into an estimate of true density. That is, by recognizing that $Y_s = D_s \times A$, where $D_s$ is the density of species $s$ and $A$ is the total area sampled at a point count, we can get that $\mathbb{E}\left[\hat{Y_s}\right] = D_s \times A \times p_s(t) \times q_s(r)$, which can be rearranged for density $D_s$. Note that through commutativity, we can rearrange these terms as $\mathbb{E}\left[\hat{Y_s}\right] = q_s(r) \times p_s(t) \times A \times D_s$, hence "QPAD" \citep{solymos_calibrating_2013}.
 
-\subsection{Observer Effects} 
-Observer effects that seem to go unmodelled but there there 
-Observer senescence 
-Skill level of IDing birds 
-Ability to accurately estimate distance (not good according to (Alldredge et al., 2007) 
-Soundscape is getting louder 
-Donut effect, esp for grassland birds 
+
 
 \section{XX Questions for Future Detectability Research}
 
