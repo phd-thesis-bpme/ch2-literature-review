@@ -232,23 +232,6 @@ $$f(r,\tau) =  1 - \exp\left\{ -\dfrac{r^2}{\exp\left\{\tau^2\right\}} \right\}.
 This would also be done in the form of a regression model, where we would have $\tau_s$ varying based on any combination of the factors that affect perceptibility through EDR, such as roads, landcover, etc.
 This can also be done using the \texttt{detect} R package \citep{solymos_detect_2020}.
 
-\par The QPAD method allows for estimates of true density to be derived from any survey, by allowing the detectability function to act as a statistical offset to account for differences among survey types. An offset term is used in linear models to adjust the expected value with a known quantity. In our case the detectability function quantity is not known but estimated through QPAD. But as a result, the offsets allow all survey-observed counts to be translated into an estimate of true density. That is, by recognizing that $Y_s = D_s \times A$, where $D_s$ is the density of species $s$ and $A$ is the total area sampled at a point count, we can get that $\mathbb{E}\left[\hat{Y_s}\right] = D_s \times A \times p_s(t) \times q_s(r)$, which can be rearranged for density $D_s$. Note that through commutativity, we can rearrange these terms as $\mathbb{E}\left[\hat{Y_s}\right] = q_s(r) \times p_s(t) \times A \times D_s$, hence "QPAD" \citep{solymos_calibrating_2013}.
+\par The QPAD method allows for estimates of true density to be derived from any survey, by allowing the detectability function to act as a statistical offset to account for differences among survey types. An offset term is used in linear models to adjust the expected value with a known quantity. In our case the detectability function quantity is not known but estimated through QPAD. But as a result, the offsets allow all survey-observed counts to be translated into an estimate of true density. That is, by recognizing that $Y_s = D_s \times A$, where $D_s$ is the density of species $s$ and $A$ is the total area sampled at a point count, we can get that $\mathbb{E}\left[\hat{Y_s}\right] = D_s \times A \times p_s(t) \times q_s(r)$, which can be rearranged for density $D_s$. Note that through commutativity, we can rearrange these terms as $\mathbb{E}\left[\hat{Y_s}\right] = q_s(r) \times p_s(t) \times A \times D_s$, hence ``QPAD" \citep{solymos_calibrating_2013}.
 
-
-
-\section{XX Questions for Future Detectability Research}
-
-Shifts in availability over the years? Cite hummingbird example.
-
-Spatial information about detectability? Do we really have to take into account space (either on broad sclae like BCRs or on smaller sclaes like latitude or longitude) when calcualing detectability?
-
-Are avialability and perceptibility truly independent? Some evidence for it, but coudl this be something that is taken into account when using ARU technology?
-
-How good of esitmtaes of detectability will we be able to get from ARUs? There will be different things to consider with ARUs: on availability side of things, the use of a recognizer vs. human listener could affect time to first detection. Can actually get a true "cue rate' with ARU. How accurately can we get true distance to bird form ARUs, without introducing even more sources of error into the mix?
-
-Detectability is hella nuanced, so at what point are we "happy' with a detectability estimate vs when should we continue to potentially torture the data?
-
-Closing remarks 
-
-\section{OLD STUFF }
 
