@@ -15,15 +15,15 @@ Here, we define availability $p(\cdot)$ as a function that generates the probabi
 Then, we can define perceptibility $q(\cdot)$ as a function that generates the conditional probability that a bird giving a cue is perceived and recorded by observer.
 Hence, we have that detectability $f(\cdot) = p(\cdot) \times q(\cdot)$.
 Often, the terms ``perceptibility" and ``detectability" are used interchangeably, and so for the purposes of this review and for the remainder of this thesis, I will specifically use \textit{perceptibility} when referring to the conditional probability that a cueing bird is recorded, whereas I will use \textit{detectability} when referring to the product of availability and perceptibility.
-In addition, for the purposes of the following arguments in this chapter, I will consider the observer to be a human conducting a point count or transect. However, in Chapter 6, I will dive into opportunities for passive acoustic monitoring to function as an observer.
+In addition, for the purposes of the following arguments in this chapter, I will consider the observer to be a human conducting a point count or transect. However, in Chapter 7, I will explore opportunities for passive acoustic monitoring to function as an observer.
 
 \par Detectability in landbirds is generally non-constant. 
 Factors such as time of day, time of year, habitat type, and presence of roads, among several other factors, have been shown to affect both the availability and the perceptibility of birds \citep{wilson_reliability_1985, solymos_calibrating_2013, johnston_species_2014, cooke_road_2020}. 
 Additionally, the length of time for which an observer surveys for a bird, and the maximum survey distance for which the observer is surveying, can account for some variation in how many birds are detected and recorded for any given survey \citep{alldredge_factors_2007, solymos_calibrating_2013, buckland_distance_2015}.  
 Our goal in detectability research is to appropriately model the components $p(\cdot)$ and $q(\cdot)$ so as to derive an accurate and precise estimate of detectability that captures the variation.
 Table 1 of \citet{johnson_defense_2008} nicely captures the various factors that affect both availability and perceptibility in birds.
-In the following two sections of this chapter (i.e., ``What affects availability?" and ``What affects perceptibility?"), I will expand on the table by providing context for each of the factors, as well as research that shows general trends of magnitude and direction of these factors as it relates to detectability.
-These factors will then build up to the section where I describe \textit{how} to model detectability, with a particular focus on the QPAD methodology that has been developed from the Boreal Avian Modelling project.
+In the following two sections of this chapter (i.e., ``What affects availability?" and ``What affects perceptibility?"), I will expand on the table by providing context for some of the factors, as well as research that shows general trends of magnitude and direction of these factors as it relates to detectability.
+These factors will then build up to the section where I describe \textit{how} to model detectability, with a particular focus on the QPAD methodology that has been developed from the Boreal Avian Modelling project \citep{solymos_calibrating_2013}.
 
 
 \section{What affects availability?}
@@ -31,37 +31,37 @@ These factors will then build up to the section where I describe \textit{how} to
 \par Recall that availability is the probability that a bird that is occupying a survey site gives a cue, such as a song, chip, or a visual cue during a survey.
 Factors that affect availability will be those factors that affect both a) the birds propensity to give a cue, and b) a survey's ability to pick up a cue in time.
 
-\subsection{Species-specific Factors}
-\subsubsection{Phenology}
-\par One of the most well-known factors affecting availability is time of day.
+\subsection{Phenology}
+\par One of the most well-known factors affecting availability is time of day \citep{robbins_effect_1981}.
 In most landbirds species, availability will peak (i.e., probability of availability will be close to 1) at dawn, or shortly after sunrise, during the ``dawn chorus".
 This is the period of the day where many songbirds are active and most vocal.
-Many surveys of landbirds take advantage of this peak availability by conducting surveys during these peak hours, typically from 1 hour before sunrise until approximately 3 to 4 hours after sunrise.
+Many surveys of landbirds take advantage of this peak availability by conducting surveys during these peak hours, typically from 1 hour before sunrise until approximately 3 to 4 hours after sunrise \citep{marsh_correcting_1989}.
 
-\par In addition to the time of day effect, time of year will also have an obvious effect on probability of availability.
-Songbirds will vocalize, call, and appear more during peak territory establishment season, and even during migration,  than later on in the breeding season when the birds become more inconspicuous.
+\par In addition to the time of day effect, time of year will also have an effect on probability of availability \citep{wilson_reliability_1985, solymos_calibrating_2013}.
+Songbirds will vocalize, call, and appear more during peak territory establishment season, and even during migration, than later on in the breeding season when the birds become more inconspicuous.
 Similar to time of day, bird surveys are often conducted to try to hit this maximal availability in time of year.
 
-\par These temporal effects may be confounded spatially, because (at least in North America) certain parts of the continent have an earlier spring than other parts of the continent.
+\par These temporal effects may be confounded spatially, because (at least in North America) certain parts of the continent have an earlier spring than other parts of the continent \citep{solymos_evaluating_2018}.
 In western North America, the ``green-up" time generally happens earlier, and so wide-spread species in North America may begin to sing earlier in the western part of the continent than the eastern part of the continent.
 However, there is yet to be a study that clearly shows this, so this may be an avenue for future research.
 
 \par It should be noted that while many songbirds fit into a classical ``peak availability in the morning and during early breeding season", it is not necessarily the case that all \textit{landbirds} fit into this description.
-One clear example would be nightjars, where their typical displays (and therefore peak availability) are in the crepuscular hours \citep{knight_still_2022}.
+One clear example would be nightjars, where their typical mating displays (and therefore peak availability) are in the crepuscular hours \citep{knight_still_2022}.
 This is also true of some shorebirds such as American Woodcock, where they are much less available during the day than in the evening hours \citep{binley_better_2023}.
 As such, when modelling availability in landbirds in general (see discussion later), it may not necessarily be appropriate to throw a ``one size fits all" when considering temporal factors.
 
-\subsection{Evolutionary Processes}
-TO DO: This section is hot garbage
-\par There is evidence that evolutionary processes may play a part as to when a bird starts singing in a year, and how often it sings. 
+\subsection{Evolutionary Processes and Traits}
+\par There is evidence that evolutionary processes and traits may play a part as to when a bird starts singing in a year, and how often it sings \citep{thomas_two_1999}. 
 \citet{solymos_phylogeny_2018} showed that phylogeny can explain some of the variation in cue rates (i.e., the rate at which a bird calls per unit time, which contributes to its measure of availability in certain modelling approaches) among species. 
-This may partly be because of how evolutionary processes contributed to how song works in birds (GARBAGE).
-Additionally, traits such as whether or not a bird is migratory may also contribute to availability during a survey.
-Birds that are migratory tend to sing at higher rates than birds that are resident (CITATION), because there is ``more to lose" for birds that migrate.
+This may likely because bird song is under directional selection \citep{solymos_phylogeny_2018, thomas_two_1999}.
+Additionally, phylogenetic relatedness may be able to account for additional latent variables that affect detectability, and so it is likely an important factor to include in models of detectability \citep{frishkoff_phylogenetic_2017}.
+Finally, traits such as whether or not a bird is migratory may also contribute to availability during a survey.
+Birds that are migratory tend to sing at higher rates than birds that are resident \citep{gordo_geographic_2008}, because there is ``more to lose" for birds that migrate.
+Although \citet{solymos_phylogeny_2018} initially hypothesized that body size would have a negative effect on cue rate due to changes in metabolic rate \citep{bennett_active_1987, read_evolution_1992}, their model of several boreal species revealed body size to have little effect.
 
-\par One newer factor that has occured since 2020 is the brief but signficant period of the "anthropause".
-Some studies showed that birds may have actually been affected by this anthropause when less humans were out and about, in that birds tended to sing (CHECK WHAT HAPPENED HERE WITH WTSP IN CALIFORNIA).
-This may suggest ongoing research to determine effects of anthropogenic noise on bird singing rate, and bird singing times.
+\subsection{Survey Timing and Conditions}
+\par The duration of a bird survey has a clear effect on the probability of a bird singing within the survey: the longer an observer is conducting a survey, the more likely a bird will sing during the survey time \citep{johnson_point_1995, diefenbach_incorporating_2007}.
+This therefore has implications for what duration a survey should be conducted, in that longer surveys will likely pick up more conspicuous species, but at the cost of potentially double counting inconspicuous species that move \citep{solymos_revisiting_2016, matsuoka_reviving_2014, granholm_bias_1983}.
 
 \section{What affects perceptibility?}
 
@@ -82,9 +82,9 @@ Both of these basic factors result in detection distances that are smaller in cl
 \par Within an ``open" or ``closed" environment, numerous factors about the environment itself can contribute to changes in detection distance and therefore perceptibility.
 There is some evidence to suggest that different types of forest (e.g., broadleaf, needleleaf, mixed forest, etc.) can affect the attenuation of a bird's song, in that broadleaf forests tend to diminish sound quicker than needleleaf forests \citep{schieck_biased_1997}.
 In both open and closed environments, wind can have a significant interacting effects on perceptibility.
-In an open environment, wind can ``carry" sound from one direction while diminishing sound from the opposite direction, creating a deformed circle of detection \citep{rigby_factors_2019}, whereas in a closed environment, wind can have a masking effect due to added tree noise (which is also an effect of the type of forest) (CITATION).
+In an open environment, wind can ``carry" sound from one direction while diminishing sound from the opposite direction, creating a deformed circle of detection \citep{rigby_factors_2019}, whereas in a closed environment, wind can have a masking effect due to added tree noise (which is also an effect of the type of forest).
 Finally, within closed environments, maturity of the forest can have a significant effect on sound attenuation, in that forests with larger trees (measured by metrics such as diameter at breast height or DBH) generally will have greater sound attenuation than less mature forests containing trees with smaller DBH.
-This has implications for setting up ARUs in forested areas, particularly for accounting for attenuation in localization grids (CITATION).
+This has implications for setting up ARUs in forested areas, particularly for accounting for attenuation in localization grids.
 
 \subsection{Roads}
 
@@ -94,8 +94,8 @@ This has implications for setting up ARUs in forested areas, particularly for ac
 This is, of course, in addition to the fact that a road is effectively an open habitat, which already would tend to increase perceptibility of a bird singing near a road.
 However, given the linearity of roads, this effect does not occur uniformly across the survey radius.
 That is, rather than a circular effective detection radius for a singing bird, we may expect a elliptical detection shape, whereby the major axis of the ellipse follows the road and the minor axis is perpendicular to the road.
-The shape of this ellipse would then also be affected by the habitat perpendicular to the road, in that a forested habitat would generate a detection shape with a much smaller minor axis than an open habitat would (FIGURE WOULD BE USEFUL).
-Regardless, the hard surface of the road and the open habitat that a road creates will generally increase perceptibility compared to an offroad survey.
+The shape of this ellipse would then also be affected by the habitat perpendicular to the road, in that a forested habitat would generate a detection shape with a much smaller minor axis than an open habitat would.
+Regardless, the hard surface of the road and the open habitat that a road creates will generally increase perceptibility compared to an offroad survey \citep{solymos_lessons_2020}.
 
 \par On the other hand, road noise may have opposite effects on perceptibility.
 \citet{cooke_road_2020} found, in a study in the UK, that road noise tended to decrease the detectability of birds, particularly for birds that are smaller in body size and therefore rely heavier on aural cues for detection.
@@ -113,25 +113,16 @@ More research should be done to truly estimate how these linear features affect 
 
 \subsection{Traits}
 
-\par Traits contribute a significant proportion of what drives perceptibility in landbirds.
+\par Traits contribute a significant proportion of what drives perceptibility in landbirds \citep{seoane_species-specific_2005, garrard_general_2013, denis_biological_2017, johnston_species_2014, solymos_phylogeny_2018}.
 In particular, certain traits such as body size and song pitch contribute greatly to how easily a bird can be seen or heard during a survey.
-In most cases, a bird with a larger body size will be easier to detect than a bird with a smaller body size, and thus will have a higher perceptibility.
-Similarly, a bird with a higher-pitched song will be more difficult to hear than a bird with a lower-pitched song (to an extent), and will therefore have a lower perceptibility.
-This also interacts with observer effects (see subsection Observer Effects) when considering the potential effects of hearing loss among observers as they age.
+In most cases, a bird with a larger body size will be easier to detect than a bird with a smaller body size, and thus will have a higher perceptibility \citep{bowman_adaptive_1979, fletcher_acoustics_1999}.
+Similarly, a bird with a higher-pitched song will be more difficult to hear than a bird with a lower-pitched song (to an extent), and will therefore have a lower perceptibility \citep{morton_ecological_1975}.
 
 \par In addition to song pitch, song type can play a major role in the perceptibility of a bird.
 This is particularly true when considering interactions with the environment.
 Indeed, there is evidence to suggest that bird song has evolved partially depending on their preferred habitat.
-In forested environments, pure-tone-based songs, such as those from White-throated Sparrow (\textit{Zonotrichia albicollis}), can carry better through the excess attenuation of the forest (CITE Morton and Brumm citations), whereas in an open environment, birds are more likely to have "rattle" songs (CITE Wiley 1991).
+In forested environments, pure-tone-based songs, such as those from White-throated Sparrow (\textit{Zonotrichia albicollis}), can carry better through the excess attenuation of the forest \citep{morton_ecological_1975, brumm_environmental_2009}, whereas in an open environment, birds are more likely to have "rattle" songs \citep{wiley_associations_1991}.
 As such, habitat preference can be a factor that affects perceptibility, in that it could be used as a proxy for these song types.
-
-\subsection{Observer Effects} 
-Observer effects that seem to go unmodelled but there there 
-Observer senescence 
-Skill level of IDing birds 
-Ability to accurately estimate distance (not good according to (Alldredge et al., 2007) 
-Soundscape is getting louder 
-Donut effect, esp for grassland birds 
 
 \section{Modelling of Detectability}
 
@@ -232,5 +223,14 @@ This would also be done in the form of a regression model, where we would have $
 This can also be done using the \texttt{detect} R package \citep{solymos_detect_2020}.
 
 \par The QPAD method allows for estimates of true density to be derived from any survey, by allowing the detectability function to act as a statistical offset to account for differences among survey types. An offset term is used in linear models to adjust the expected value with a known quantity. In our case the detectability function quantity is not known but estimated through QPAD. But as a result, the offsets allow all survey-observed counts to be translated into an estimate of true density. That is, by recognizing that $Y_s = D_s \times A$, where $D_s$ is the density of species $s$ and $A$ is the total area sampled at a point count, we can get that $\mathbb{E}\left[\hat{Y_s}\right] = D_s \times A \times p_s(t) \times q_s(r)$, which can be rearranged for density $D_s$. Note that through commutativity, we can rearrange these terms as $\mathbb{E}\left[\hat{Y_s}\right] = q_s(r) \times p_s(t) \times A \times D_s$, hence ``QPAD" \citep{solymos_calibrating_2013}.
+
+\section{Putting it All Together}
+\par The QPAD methodology gives us a flexible way to model cue rate and effective detection radius in birds using removal and distance modelling, while accounting for a variety of factors that affect these components of detectability.
+Additionally, because QPAD uses the multinomial distribution on a survey-by-survey basis to estimate a shared value of cue rate or effective detection radius, multiple survey types can be included in a single analysis.
+This has major advantages in being able to create a data-rich analysis that is informed heavily by data collected across a variety of contexts.
+This advantage has already been shown through the Boreal Avian Modelling project's efforts to generate densities for Boreal birds \citep{solymos_calibrating_2013, solymos_evaluating_2018, solymos_phylogeny_2018, solymos_lessons_2020}.
+
+TO DO: FINISH THIS SECTION AND TIE IT TO THE REST OF THE CHAPTERS.
+
 
 
