@@ -7,8 +7,8 @@ Here, I specifically condition that the species is present to disentangle those 
 That is to say, we are only concerned with the probability of observing a species given it is there, rather than the joint probability of observing the species and the probability of the species being present.
 
 \par In general, we can think of detectability as a function $f(\cdot)$ that scales the \textit{true} abundance of a species at a site down to the \textit{observed} abundance of a species at a site (and vice versa). 
-That is, $n = Nf(\cdot)$, where $n$ is the observed abundance of a species, $N$ is the true abundance of the species, and $f(\cdot)$ is the detectability function where the range of $f(\cdot) \in [0,1]$.
-Assuming no false positives, $n$ is necessarily a subset of $N$.
+That is, $	\mathbb{E}\left[n|N\right] = Nf(\cdot)$, where $n$ is the observed abundance of a species, $N$ is the true abundance of the species, and $f(\cdot)$ is the detectability function where the range of $f(\cdot) \in [0,1]$.
+Assuming no false positives, $n$ is necessarily an integer between 0 and N.
 
 \par The detectability function $f(\cdot)$ can be further broken down into two components: availability and perceptibility \citep{marsh_correcting_1989}.
 Here, we define availability $p(\cdot)$ as a function that generates the probability that a bird occupying a site gives a cue (such as a song, chip, or visual).
@@ -119,9 +119,9 @@ As such, habitat preference can be a factor that affects perceptibility, in that
 
 \section{Modelling Detectability}
 
-\par In general, at any given sampling event, for species $s$, there exists the true species abundance $Y_s$, which represents all the individuals of species $s$ at that site at the time of the sampling event. During any sampling event, the recorded count for species $s$ (i.e., $\hat{Y_s}$), is a subset of the true abundance $Y_s$, such that $\hat{Y_s} \leq Y_s$, assuming individuals are correctly identified \citep{bennett_how_2024, johnson_defense_2008}. The difference between the recorded count and the true count depends on the detectability of the birds. The factors that affect detectability of species $s$ can be accounted for in the latent detectability function $f(\cdot)$, such that
+\par In general, at any given sampling event, for species $s$, there exists the true species abundance $N_s$, which represents all the individuals of species $s$ at that site at the time of the sampling event. During any sampling event, the recorded count for species $s$ (i.e., $Y_s$), is a subset of the true abundance $N_s$, such that ${Y_s} \leq N_s$, assuming individuals are correctly identified \citep{bennett_how_2024, johnson_defense_2008}. The difference between the recorded count and the true count depends on the detectability of the birds. The factors that affect detectability of species $s$ can be accounted for in the latent detectability function $f(\cdot)$, such that
 \begin{equation}\label{detect-function}
-	\mathbb{E}\left[\hat{Y_s}\right] = Y_s \times f(\cdot).
+	\mathbb{E}\left[{Y_s}\right] = N_s \times f(\cdot).
 \end{equation}
 In other words, on average, the expected number of observed individuals of species $s$ is going to be a function of the true number of individuals of species $s$ scaled by the detectability of species $s$.
 
@@ -130,15 +130,15 @@ Let $p_s(t)$ be the availability of species $s$ for a given survey duration $t$,
 Because detectability is a product of two components (availability and perceptibility), the detectability function can now be written as $f(\cdot) = p_s(t) \times q_s(r)$, and Equation \ref{detect-function} can now be written as:
 
 \begin{equation*}
-	\mathbb{E}\left[\hat{Y_s}\right] = Y_s \times p_s(t) \times q_s(r).
+	\mathbb{E}\left[{Y_s}\right] = N_s \times p_s(t) \times q_s(r).
 \end{equation*}
 
-\par Availability $p_s$ is calculated from surveys that employ a removal sampling approach \citep{alldredge_time--detection_2007, farnsworth_removal_2002, solymos_evaluating_2018}, in which total survey time is partitioned into “time bins” $t_J$, not necessarily of equal size. 
+\par Availability $p_s$ is estimated from surveys that employ a removal sampling approach \citep{alldredge_time--detection_2007, farnsworth_removal_2002, solymos_evaluating_2018}, in which total survey time is partitioned into “time bins” $t_J$, not necessarily of equal size. 
 For example, a 6-minute survey may be partitioned into $J = 6$ 1-minute time bins, such that the $j = 1$ time bin corresponds to 0 - 1 minutes of the survey, the $j = 2$ time bin corresponds to 1 - 2 minutes of the survey, and so on.
 Or, it could be partitioned into a 1-minute time bin, followed by a 3-minute time bin, followed by a 2-minute time bin, for a total of $J = 3$ time bands, not necessarily of equal size. 
 If a bird gives a cue and is recorded in time bin $j$, then it is ``removed” from the available birds to be recorded in all subsequent time bin. 
 Availability is a function of ``cue rate", which we label $\phi$.
-Cue rate $\phi$ is a Poisson process that describes the intensity of bird calls per minute, and is estimated via maximum likelihood estimation or Bayesian estimation given survey type and any number of covariates. 
+Cue rate $\phi$ describes the intensity of bird calls per minute in a Poisson process, and is estimated via maximum likelihood estimation or Bayesian estimation given survey type and any number of covariates. 
 Then, the time to first cue event (i.e., detection) follows an exponential distribution $f(t) = \phi e^{-t\phi}$. 
 Thus, the cumulative distribution function for time to first detection on the interval $\left[0, t_J\right]$, and hence availability $p(t_J)$, is given by (Alldredge et al., 2007)
 \begin{align*}
@@ -163,29 +163,32 @@ From this, the probability $q_s$ that an individual bird located within radius $
 
 \subsection{The QPAD Approach to Detectability Estimation}\label{subsection:qpad-model}
 
-\par The QPAD method developed by the Boreal Avian Modelling project is a flexible approach to accounting for heterogeneity in survey conditions and survey methodology \citep{solymos_calibrating_2013}. It can be used to calculate availability and perceptibility independently, while allowing for multiple surveying methods to be accounted for at once. In other words, any dataset that employs a removal sampling approach with two or more time bins can be jointly used to calculate availability, and any dataset that employs a distance sampling approach with two or more distance bins can be jointly used to calculate perceptibility (Sólymos et al. 2013). Additionally, by recognizing that availability is a function of cue rate, and that perceptibility is a function of EDR, the QPAD method allows for variation in cue rate and EDR as a function of covariates that affect detectability (such as time of day, time of year, habitat type, roadsides, etc.), and for estimates of perceptibility as a function of survey radius or other covariates (Sólymos et al. 2013). 
+\par The QPAD method developed by the Boreal Avian Modelling project is a flexible approach to accounting for heterogeneity in survey conditions and survey methodology \citep{solymos_calibrating_2013}. 
+It can be used to estimate availability and perceptibility independently, while allowing for multiple surveying methods to be accounted for at once. 
+In other words, any dataset that employs a removal sampling approach with two or more time bins can be jointly used to calculate availability, and any dataset that employs a distance sampling approach with two or more distance bins can be jointly used to calculate perceptibility \citep{solymos_calibrating_2013}. 
+Additionally, by recognizing that availability is a function of cue rate, and that perceptibility is a function of EDR, the QPAD method allows for variation in cue rate and EDR as a function of covariates that affect detectability (such as time of day, time of year, habitat type, roadsides, etc.), and for estimates of perceptibility as a function of survey radius or other covariates \citep{solymos_calibrating_2013}. 
 
-\par For any point count that employed removal sampling \citep{alldredge_time--detection_2007, farnsworth_removal_2002} and/or distance sampling \citep{buckland_introduction_2001, buckland_distance_2015}, let $\hat{Y}_{sijk}$ be the observed count of species $s$ during sampling event $i$, occurring in time band $j \in [1,J]$ and/or distance band $k \in [1,K]$.
+\par For any point count that employed removal sampling \citep{alldredge_time--detection_2007, farnsworth_removal_2002} and/or distance sampling \citep{buckland_introduction_2001, buckland_distance_2015}, let ${Y}_{sijk}$ be the observed count of species $s$ during sampling event $i$, occurring in time band  $j=1,\ldots,J$ and/or distance band $k = 1,\ldots,K$.
 That is, if we have a point count where removal sampling or distance sampling (but not both) was not used, then either $J = 1$ or $K = 1$, respectively; whereas, if we have a point count where both removal sampling and distance sampling was used, then both $J,K \geq 2$.
 The case where $J = K = 1$ is where neither removal sampling nor distance sampling was used, and so these data points are not appropriate for the modelling techniques described here.
 
 \subsubsection{QPAD Removal Modelling}
 
 \par For QPAD removal modelling, we are only interested in the time bin in which the bird was recorded, and not the distance, and so we sum counts from each sampling event $i$ over all distance bands. 
-Thus, we consider counts $\hat{Y}_{sij.} = \sum_{k=1}^{K} \hat{Y}_{sijk}$. 
-From \citet{solymos_calibrating_2013}, we model $\hat{Y}_{sij.}$ as
+Thus, we consider counts ${Y}_{sij.} = \sum_{k=1}^{K} {Y}_{sijk}$. 
+From \citet{solymos_calibrating_2013}, we model ${Y}_{sij.}$ as
 
-$$\hat{Y}_{sij.} \sim multinomial\left(\hat{Y}_{si..}, \mathbf{\Pi}_{si.}\right).$$
+$${Y}_{sij.} \sim \mathrm{multinomial}\left({Y}_{si..}, \mathbf{\Pi}_{si}^{\left\{\phi\right\}}\right).$$
 
-\par For sample $i$, $\mathbf{\Pi}_{si.}$ is the corresponding probability vector that determines how the total number of species $s$ observed at sample $i$ (i.e., $\hat{Y}_{si..}$) are to be distributed across the $J$ time bands; in essence, it is the mixing parameter.
+\par For sample $i$, $\mathbf{\Pi}_{si}^{\left\{\phi\right\}}$ is the corresponding probability vector that determines how the total individuals of species $s$ observed at sample $i$ (i.e., ${Y}_{si..}$) are to be distributed across the $J$ time bands; in essence, it is the mixing parameter.
 Let $t_{ij}$ be the maximum time for time band $j$ during sampling event $i$, and let $\phi_s$ be the unknown cue rate for species $s$.
-We then have the following calculation of each component $\pi_{sij}$ of the mixing parameter $\mathbf{\Pi}_{si.}$:
+We then have the following calculation of each component $\pi_{sij}^{\left\{\phi\right\}}$ of the mixing parameter $\mathbf{\Pi}_{si}^{\left\{\phi\right\}}$:
 
 \begin{equation*}
-	\pi_{sij} = 
+	\pi_{sij}^{\left\{\phi\right\}} = 
 	\begin{cases}
 		\dfrac{\exp\left\{ -t_{i,j-1}\phi_{s} \right\} - \exp\left\{ -t_{ij}\phi_{s} \right\}}{1 - \exp\left\{ -t_{iJ}\phi_{s} \right\}} & \text{for } j > 1 \\
-		1 - \sum_{n = 2}^{J} \pi_{sin} & \text{for } j = 1
+		1 - \sum_{n = 2}^{J} \pi_{sin}^{\left\{\phi\right\}} & \text{for } j = 1
 	\end{cases}
 \end{equation*}
 
@@ -196,19 +199,19 @@ This can be done using the \texttt{detect} R package \citep{solymos_detect_2020}
 \subsubsection{QPAD Distance Modelling}
 
 \par For distance modelling, we are only interested in the distance to the cueing bird, and not the time bin that the bird was recorded in, and so we sum counts from each sampling event $i$ over all time bands. 
-Thus, we consider counts $\hat{Y}_{si.k} = \sum_{j=1}^{J}\hat{Y}_{sijk}$. 
-From \citet{solymos_calibrating_2013}, we model $\hat{Y}_{si.k}$ as
-$$\hat{Y}_{si.k} \sim multinomial\left(\hat{Y}_{si..}, \mathbf{\Pi}_{si.}\right).$$
+Thus, we consider counts ${Y}_{si.k} = \sum_{j=1}^{J}{Y}_{sijk}$. 
+From \citet{solymos_calibrating_2013}, we model ${Y}_{si.k}$ as
+$${Y}_{si.k} \sim multinomial\left({Y}_{si..}, \mathbf{\Pi}_{si}^{\left\{\tau\right\}}\right).$$
 
-\par For sample $i$, $\mathbf{\Pi}_{si.}$ is the corresponding probability vector that determines how the total number of species $s$ observed at sample $i$ (i.e., $\hat{Y}_{si..}$) are to be distributed across the $K$ distance bins; in essence, it is the mixing parameter. 
+\par For sample $i$, $\mathbf{\Pi}_{si}^{\left\{\tau\right\}}$ is the corresponding probability vector that determines how the total number of species $s$ observed at sample $i$ (i.e., ${Y}_{si..}$) are to be distributed across the $K$ distance bins; in essence, it is the mixing parameter. 
 Let $r_{ik}$ be the maximum distance for distance bin $k$ during sampling event $i$, and let $\tau_s$ be the unknown effective detection radius for species $s$. 
-We then have the following calculation of each component $\pi_{sik}$ of the mixing parameter $\mathbf{\Pi}_{si.}$:
+We then have the following calculation of each component $\pi_{sik}^{\left\{\tau\right\}}$ of the mixing parameter $\mathbf{\Pi}_{si}^{\left\{\tau\right\}}$:
 
 \begin{equation*}
-	\pi_{sik} = 
+	\pi_{sik}^{\left\{\tau\right\}} = 
 	\begin{cases}
 		\dfrac{f(r_{i,k}, \tau_s) - f(r_{i,k-1}, \tau_s)}{f(r_{i,K}, \tau_s)} & \text{for } k > 1 \\
-		1 - \sum_{n = 2}^{K} \pi_{sin} & \text{for } k = 1
+		1 - \sum_{n = 2}^{K} \pi_{sin}^{\left\{\tau\right\}} & \text{for } k = 1
 	\end{cases}
 \end{equation*}
 
@@ -225,8 +228,8 @@ This can also be done using the \texttt{detect} R package \citep{solymos_detect_
 An offset term is used in linear models to adjust the expected value with a known quantity.
 In our case the detectability function quantity is not known but estimated through QPAD.
 The offsets allow all survey-observed counts to be translated into an estimate of true density.
-That is, by recognizing that $Y_s = D_s \times A$, where $D_s$ is the density of species $s$ and $A$ is the total area sampled at a point count, we can get that $\mathbb{E}\left[\hat{Y_s}\right] = D_s \times A \times p_s(t) \times q_s(r)$, which can be rearranged for density $D_s$.
-Note that through commutativity, we can rearrange these terms as $\mathbb{E}\left[\hat{Y_s}\right] = q_s(r) \times p_s(t) \times A \times D_s$, hence ``QPAD" \citep{solymos_calibrating_2013}.
+That is, by recognizing that $Y_s = D_s \times A$, where $D_s$ is the density of species $s$ and $A$ is the total area sampled at a point count, we can get that $\mathbb{E}\left[{Y_s}\right] = D_s \times A \times p_s(t) \times q_s(r)$, which can be rearranged for density $D_s$.
+Note that through commutativity, we can rearrange these terms as $\mathbb{E}\left[{Y_s}\right] = q_s(r) \times p_s(t) \times A \times D_s$, hence ``QPAD" \citep{solymos_calibrating_2013}.
 
 \par The QPAD methodology gives us a flexible way to model cue rate and effective detection radius in birds using removal and distance modelling, while accounting for a variety of factors that affect these components of detectability.
 Additionally, because QPAD uses the multinomial distribution on a survey-by-survey basis to estimate a shared value of cue rate or effective detection radius, multiple survey types can be included in a single analysis.
